@@ -1,0 +1,22 @@
+Hello cookies!<br>
+Auth: <%= @auth %><br>
+
+<% if request.host == "cookie-testing.test" %>
+  <a href="https://cookie-testing-2.test:3001/auth">Set auth cookie</a>
+
+  <% if @auth.blank? %>
+  <script>
+    fetch('https://cookie-testing-2.test:3001/auth', {credentials: 'include'})
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        if (data.auth)
+          document.cookie = 'auth='+data.auth+'; SameSite=Strict; Secure';
+      });
+  </script>
+  <% end %>
+<% end %>
+
+<% if request.host == "cookie-testing-2.test" %>
+  <a href="/login">Login</a>
+<% end %>
